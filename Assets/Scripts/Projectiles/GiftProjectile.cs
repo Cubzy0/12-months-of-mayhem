@@ -26,12 +26,17 @@ public class GiftProjectile : MonoBehaviour
         transform.position += (Vector3)(_direction * speed * Time.deltaTime);
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+   private void OnTriggerEnter2D(Collider2D other)
+{
+    if (other.CompareTag("Enemy"))
     {
-        if (other.CompareTag("Enemy"))
+        EnemyHealth health = other.GetComponent<EnemyHealth>();
+        if (health != null)
         {
-            // TODO: damage enemy later
-            Destroy(gameObject);
+            health.TakeDamage(damage);
         }
+
+        Destroy(gameObject);
     }
+}
 }
