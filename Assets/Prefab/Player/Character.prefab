@@ -221,7 +221,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AutoShooter
   projectilePrefab: {fileID: 7939706591765810814, guid: 013708e59f3e041a3ab9b6640b08ed4d, type: 3}
   shootPoint: {fileID: 4652942564502819594}
-  fireRate: 2
+  fireRate: 1
   projectileSpeed: 2
   projectileDamage: 1
   detectionRadius: 3
