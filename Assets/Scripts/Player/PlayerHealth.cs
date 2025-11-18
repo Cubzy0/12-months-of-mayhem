@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 using Unity.Cinemachine;
 
 public class PlayerHealth : MonoBehaviour
@@ -9,21 +8,23 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private float deathDelay = 0.5f;
 
     private int currentHealth;
-    private HealthUI healthUI;
+
+    [SerializeField] private HealthUI healthUI;
     [SerializeField] private DamageFlash damageFlash;
+    [SerializeField] private CinemachineImpulseSource impulseSource;
 
     private void Awake()
     {
         currentHealth = maxHealth;
-        healthUI = FindAnyObjectByType<HealthUI>();
+
+        if (healthUI == null)
+            healthUI = FindAnyObjectByType<HealthUI>();
     }
 
     private void Start()
     {
         if (healthUI != null)
-        {
             healthUI.UpdateHearts(currentHealth, maxHealth);
-        }
     }
 
     public void TakeDamage(int amount)
@@ -37,9 +38,8 @@ public class PlayerHealth : MonoBehaviour
         if (damageFlash != null)
             damageFlash.TriggerFlash();
 
-        var impulse = GetComponent<CinemachineImpulseSource>();
-        if (impulse != null)
-            impulse.GenerateImpulse();
+        if (impulseSource != null)
+            impulseSource.GenerateImpulse();
 
         if (currentHealth <= 0)
             Die();
