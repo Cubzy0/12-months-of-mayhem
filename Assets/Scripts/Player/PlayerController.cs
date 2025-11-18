@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
     private GameInput input;
     private Rigidbody2D rb;
     private Vector2 move;
+    private Vector3 initialScale;
 
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 5f;
@@ -25,6 +26,7 @@ public class PlayerController : MonoBehaviour
         input = new GameInput();
         rb = GetComponent<Rigidbody2D>();
         mainCam = Camera.main;
+        initialScale = transform.localScale;
     }
 
     private void OnEnable() => input.Player.Enable();
@@ -76,11 +78,19 @@ public class PlayerController : MonoBehaviour
     {
         if (move.x > 0.1f)
         {
-            transform.localScale = new Vector3(1, 1, 1);
+            transform.localScale = new Vector3(
+                Mathf.Abs(initialScale.x),
+                initialScale.y,
+                initialScale.z
+            );
         }
         else if (move.x < -0.1f)
         {
-            transform.localScale = new Vector3(-1, 1, 1);
+            transform.localScale = new Vector3(
+                -Mathf.Abs(initialScale.x),
+                initialScale.y,
+                initialScale.z
+            );
         }
     }
 }

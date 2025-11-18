@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Unity.Cinemachine;
 
 public class PlayerHealth : MonoBehaviour
 {
@@ -31,19 +32,17 @@ public class PlayerHealth : MonoBehaviour
         Debug.Log("Player hit! HP: " + currentHealth + "/" + maxHealth);
 
         if (healthUI != null)
-        {
             healthUI.UpdateHearts(currentHealth, maxHealth);
-        }
 
         if (damageFlash != null)
-        {
             damageFlash.TriggerFlash();
-        }
+
+        var impulse = GetComponent<CinemachineImpulseSource>();
+        if (impulse != null)
+            impulse.GenerateImpulse();
 
         if (currentHealth <= 0)
-        {
             Die();
-        }
     }
 
     private void Die()
