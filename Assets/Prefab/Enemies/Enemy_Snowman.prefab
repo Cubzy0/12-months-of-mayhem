@@ -195,6 +195,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
   maxHealth: 3
+  scoreValue: 10
   deathEffect: {fileID: 0}
 --- !u!114 &6153008959191309645
 MonoBehaviour:

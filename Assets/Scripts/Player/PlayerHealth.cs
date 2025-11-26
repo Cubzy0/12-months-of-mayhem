@@ -1,14 +1,13 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using Unity.Cinemachine;
+using Unity.Cinemachine;   // for CinemachineImpulseSource
 
 public class PlayerHealth : MonoBehaviour
 {
     [SerializeField] private int maxHealth = 5;
-    [SerializeField] private float deathDelay = 0.5f;
 
     private int currentHealth;
 
+    [Header("UI & FX")]
     [SerializeField] private HealthUI healthUI;
     [SerializeField] private DamageFlash damageFlash;
     [SerializeField] private CinemachineImpulseSource impulseSource;
@@ -17,6 +16,7 @@ public class PlayerHealth : MonoBehaviour
     {
         currentHealth = maxHealth;
 
+        // Auto-find HealthUI if not assigned
         if (healthUI == null)
             healthUI = FindAnyObjectByType<HealthUI>();
     }
@@ -30,14 +30,17 @@ public class PlayerHealth : MonoBehaviour
     public void TakeDamage(int amount)
     {
         currentHealth -= amount;
-        Debug.Log("Player hit! HP: " + currentHealth + "/" + maxHealth);
+        Debug.Log($"Player hit! HP: {currentHealth}/{maxHealth}");
 
+        // Update hearts
         if (healthUI != null)
             healthUI.UpdateHearts(currentHealth, maxHealth);
 
+        // Red flash
         if (damageFlash != null)
             damageFlash.TriggerFlash();
 
+        // Camera shake
         if (impulseSource != null)
             impulseSource.GenerateImpulse();
 
@@ -48,12 +51,15 @@ public class PlayerHealth : MonoBehaviour
     private void Die()
     {
         Debug.Log("Player died!");
-        Invoke(nameof(ReloadScene), deathDelay);
-    }
 
-    private void ReloadScene()
-    {
-        Scene current = SceneManager.GetActiveScene();
-        SceneManager.LoadScene(current.buildIndex);
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.GameOver();
+        }
+        else
+        {
+            // Fallback if there is no GameManager in the scene
+            Time.timeScale = 0f;
+        }
     }
 }

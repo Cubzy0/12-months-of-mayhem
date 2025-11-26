@@ -6,10 +6,11 @@ public class ScoreManager : MonoBehaviour
     public static ScoreManager Instance { get; private set; }
 
     [SerializeField] private TMP_Text scoreText;
-    [SerializeField] private int score = 0;
+    private int score = 0;
 
     private void Awake()
     {
+        // Basic singleton for this scene
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -17,7 +18,9 @@ public class ScoreManager : MonoBehaviour
         }
 
         Instance = this;
-        DontDestroyOnLoad(gameObject); // optional, helps if you have multiple scenes
+
+        // Make sure we start from 0 every time the scene loads
+        score = 0;
         UpdateScoreText();
     }
 
@@ -32,6 +35,10 @@ public class ScoreManager : MonoBehaviour
         if (scoreText != null)
         {
             scoreText.text = $"Score: {score}";
+        }
+        else
+        {
+            Debug.LogWarning("ScoreManager: scoreText is not assigned in the Inspector.");
         }
     }
 }
