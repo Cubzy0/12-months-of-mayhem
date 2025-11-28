@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -12,11 +13,18 @@ public class PlayerController : MonoBehaviour
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 5f;
 
+    // Speed boost support
+    private float baseMoveSpeed;
+    private bool isSpeedBoostActive;
+    private Coroutine speedBoostRoutine;
+
     private void Awake()
     {
         input = new GameInput();
         rb = GetComponent<Rigidbody2D>();
         initialScale = transform.localScale;
+
+        baseMoveSpeed = moveSpeed; // remember the original speed
     }
 
     private void OnEnable() => input.Player.Enable();
@@ -45,11 +53,34 @@ public class PlayerController : MonoBehaviour
         }
         else if (move.x < -0.1f)
         {
-            transform.localScale = new Vector3(
+        transform.localScale = new Vector3(
                 -Mathf.Abs(initialScale.x),
                 initialScale.y,
                 initialScale.z
             );
         }
+    }
+
+    // ---- SPEED BOOST API ----
+    public void ApplySpeedBoost(float multiplier, float duration)
+    {
+        if (speedBoostRoutine != null)
+        {
+            StopCoroutine(speedBoostRoutine);
+        }
+
+        speedBoostRoutine = StartCoroutine(SpeedBoostCoroutine(multiplier, duration));
+    }
+
+    private IEnumerator SpeedBoostCoroutine(float multiplier, float duration)
+    {
+        isSpeedBoostActive = true;
+        moveSpeed = baseMoveSpeed * multiplier;
+
+        yield return new WaitForSeconds(duration);
+
+        moveSpeed = baseMoveSpeed;
+        isSpeedBoostActive = false;
+        speedBoostRoutine = null;
     }
 }

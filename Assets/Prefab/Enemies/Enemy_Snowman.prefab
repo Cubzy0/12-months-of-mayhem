@@ -181,7 +181,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyController
   moveSpeed: 1
-  stopDistance: 0.3
+  stoppingDistance: 0
+  playerTag: Player
 --- !u!114 &-1825329991122433168
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -197,6 +198,10 @@ MonoBehaviour:
   maxHealth: 3
   scoreValue: 10
   deathEffect: {fileID: 0}
+  powerupPrefabs:
+  - {fileID: 6552878433810123153, guid: e654fe468b5134be8b256baedda275c7, type: 3}
+  - {fileID: 2317552166329696287, guid: 09dae4bbe13824c2db04b461960e1cba, type: 3}
+  dropChance: 0.1
 --- !u!114 &6153008959191309645
 MonoBehaviour:
   m_ObjectHideFlags: 0
